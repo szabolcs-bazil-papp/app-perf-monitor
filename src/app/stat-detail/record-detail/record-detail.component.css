@@ -1,0 +1,24 @@
+.record-container {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  border: 2px solid grey;
+  border-radius: 0.5rem;
+  min-width: 8rem;
+}
+
+.record-title {
+  font-weight: 700;
+}
+
+.record-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.aggregate {
+  font-weight: 400;
+  font-style: italic;
+}

@@ -1,0 +1,164 @@
+openapi: 3.0.1
+info:
+  title: View API
+  description: View API
+  contact:
+    email: info@it4all.hu
+  version: 1.0.0
+tags: []
+paths: {}
+components:
+  schemas:
+    UiActionRequest:
+      type: object
+      required: [code, params]
+      properties:
+        code:
+          description: Code of the executed UI action.
+          type: string
+        path:
+          type: string
+        identifier:
+          description: |
+            Identifier of UI element, or UI action, where action is performed (for example treeNode's / 
+            listItem's identifier, etc.). Optional.
+          type: string
+        params:
+          description: |
+            Additional parameters for executing the UI action.
+          type: object
+          additionalProperties: true
+    ServerRequestTrack:
+      type: object
+      description: |
+        The server request track is an object encapsulates the UiRequest and other parameters of the perform actions.
+        It stands for normal and widget actions also.
+      required: [viewName, viewUuid, startTime, request, type]
+      properties:
+        viewName:
+          description: The name of the view the request is performed on.
+          type: string
+        viewUuid:
+          description: The UUID of the view the request is performed on.
+          type: string
+          format: uuid
+        widgetId:
+          description: The identifier of the widget if it is a widget action perform.
+          type: string
+        nodeId:
+          description: The identifier of the widget node if it is a widget action perform.
+          type: string
+        startTime:
+          description: The start of the service.
+          type: string
+          format: date-time
+        endTime:
+          description: The end of the service.
+          type: string
+          format: date-time
+        readCount:
+          description: The number of executed reads.
+          type: integer
+          format: int64
+          default: 0
+        readTime:
+          description: The summarized execution time of the reads.
+          type: integer
+          format: int64
+          default: 0
+        writeCount:
+          description: The number of executed writes.
+          type: integer
+          format: int64
+          default: 0
+        writeTime:
+          description: The summarized execution time of the writes.
+          type: integer
+          format: int64
+          default: 0
+        request:
+          $ref: '#/components/schemas/UiActionRequest'
+        type:
+          description: The request type like a normal action or a widget action.
+          $ref: '#/components/schemas/ServerRequestType'
+    ServerRequestType:
+      enum:
+        [
+          ACTION,
+          WIDGET_ACTION,
+          CREATE_VIEW_CONTEXT,
+          UPDATE_VIEW_CONTEXT,
+          GET_VIEW_CONTEXT,
+          HANDLE_MESSAGE_RESULT,
+          SHOW_SMARTLINK,
+          DOWNLOAD,
+          GET_COMPONENT_MODEL,
+        ]
+    StatisticRecord:
+      type: object
+      description: |
+        The generic execution statistic is an object for the actuator infrastructure. It could be initiated for many purposes and
+        contains the count, the minimum, average and maximum execution times.
+      required: [code, params]
+      properties:
+        min:
+          description: The minimum execution time of the given action in millisec.
+          type: integer
+          format: int64
+        avg:
+          description: The average execution time of the given action in millisec.
+          type: integer
+          format: int64
+          default: 0
+        max:
+          description: The average execution time of the given action in millisec.
+          type: integer
+          format: int64
+          default: 0
+        counter:
+          description: The number of executed requests.
+          type: integer
+          format: int64
+          default: 0
+        sum:
+          description: The summarized execution time of the request.
+          type: integer
+          format: int64
+          default: 0
+    ServerRequestExecutionStat:
+      type: object
+      description: |
+        The server request execution statistic is an object for the actuator infrastructure. It is initiated for every view-widget-action and
+        contains the minimum, average and maximum execution times. It collects from the server start.
+      required: [code, params]
+      properties:
+        id:
+          description: The identifier of the statistical entry. The view - widget - action format.
+          type: string
+        viewName:
+          description: The name of the view the request is performed on.
+          type: string
+        widgetId:
+          description: The identifier of the widget if it is a widget action perform.
+          type: string
+        actionCode:
+          description: The identifier of the action performed.
+          type: string
+        fullStat:
+          description: The statistic of the whole execution.
+          $ref: '#/components/schemas/StatisticRecord'
+        writeCount:
+          description: The statistic of the writes.
+          $ref: '#/components/schemas/StatisticRecord'
+        writeStat:
+          description: The statistic of the writes.
+          $ref: '#/components/schemas/StatisticRecord'
+        readCount:
+          description: The statistic of the reads.
+          $ref: '#/components/schemas/StatisticRecord'
+        readStat:
+          description: The statistic of the reads.
+          $ref: '#/components/schemas/StatisticRecord'
+        type:
+          description: The request type like a normal action or a widget action.
+          $ref: '#/components/schemas/ServerRequestType'
