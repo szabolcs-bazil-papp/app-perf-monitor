@@ -1,6 +1,12 @@
 <div class="app-container">
   <div class="app-header">
-    <input [(ngModel)]="target" class="endpoint-input" placeholder="Actuator endpoint..." />
+    <label for="target">Actuator endpoint: </label>
+    <input
+      [(ngModel)]="target"
+      class="endpoint-input"
+      placeholder="Actuator endpoint..."
+      name="target"
+    />
     <button (click)="start()" [ngClass]="!running ? 'power-btn start' : 'power-btn stop'">
       {{ !running ? 'Start' : 'Stop' }}
     </button>
