@@ -1,0 +1,32 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+}
+.endpoint-input {
+  padding: 0.5rem;
+  border: 1px solid black;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  width: 20rem;
+}
+
+.power-btn {
+  padding: 0.5rem;
+  border: 1px solid black;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.start {
+  background-color: lightgreen;
+}
+
+.stop {
+  background-color: red;
+}
+.app-chart {
+  display: flex;
+  overflow-y: auto;
+  min-height: 30vh;
+  max-height: 50vh;
+}

@@ -1,17 +1,15 @@
 <div class="detail-container">
-  <h1
-    >{{ stat.viewName }} - {{ stat.type }}
-    {{ stat.actionCode === 'N/A' ? '' : stat.actionCode }}</h1
-  >
-  <h4>{{ stat.id }} {{ stat.widgetId }} </h4>
+  <h2>
+    {{ stat.viewName }} - {{ stat.type }} {{ stat.actionCode === 'N/A' ? '' : stat.actionCode }}
+  </h2>
   <div class="record-list">
-    <app-record-detail *ngIf="stat.fullStat" title="Full" [record]="stat.fullStat">
+    <app-record-detail *ngIf="stat.fullStat" title="Full" [record]="stat.fullStat" uom="ms">
     </app-record-detail>
-    <app-record-detail *ngIf="stat.writeStat" title="Writes" [record]="stat.writeStat">
+    <app-record-detail *ngIf="stat.writeStat" title="Writes" [record]="stat.writeStat" uom="ms">
     </app-record-detail>
     <app-record-detail *ngIf="stat.writeCount" title="Write count" [record]="stat.writeCount">
     </app-record-detail>
-    <app-record-detail *ngIf="stat.readStat" title="Reads" [record]="stat.readStat">
+    <app-record-detail *ngIf="stat.readStat" title="Reads" [record]="stat.readStat" uom="ms">
     </app-record-detail>
     <app-record-detail *ngIf="stat.readCount" title="Read count" [record]="stat.readCount">
     </app-record-detail>

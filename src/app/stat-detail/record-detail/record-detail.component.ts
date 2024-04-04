@@ -9,4 +9,5 @@ import { StatisticRecord } from 'src/app/api/actuator/model/statisticRecord';
 export class RecordDetailComponent {
   @Input() title!: string;
   @Input() record!: StatisticRecord;
+  @Input() uom?: string;
 }

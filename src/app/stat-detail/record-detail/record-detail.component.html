@@ -3,26 +3,26 @@
   <div class="record-item">
     <p>Min:</p>
     <span class="spacer"></span>
-    <p>{{ record.min }} ms</p>
+    <p>{{ record.min }} {{ uom }}</p>
   </div>
   <div class="record-item">
     <p>Avg:</p>
     <span class="spacer"></span>
-    <p>{{ record.avg }} ms</p>
+    <p>{{ record.avg }} {{ uom }}</p>
   </div>
   <div class="record-item">
     <p>Max:</p>
     <span class="spacer"></span>
-    <p>{{ record.max }} ms</p>
+    <p>{{ record.max }} {{ uom }}</p>
   </div>
   <div class="record-item aggregate">
     <p>Sum:</p>
     <span class="spacer"></span>
-    <p>{{ record.sum }} ms</p>
+    <p>{{ record.sum }} {{ uom }}</p>
   </div>
   <div class="record-item aggregate">
-    <p>Count:</p>
+    <p>Requests:</p>
     <span class="spacer"></span>
-    <p>{{ record.counter }}</p>
+    <p>{{ record.counter }} </p>
   </div>
 </div>

@@ -1,4 +1,10 @@
-<input [(ngModel)]="target" />
-<button (click)="start()">{{ !running ? 'Start' : 'Stop' }}</button>
-<canvasjs-chart [options]="chartOptions"></canvasjs-chart>
-<app-stat-detail *ngIf="detail" [stat]="detail"></app-stat-detail>
+<div class="app-container">
+  <div class="app-header">
+    <input [(ngModel)]="target" class="endpoint-input" placeholder="Actuator endpoint..." />
+    <button (click)="start()" [ngClass]="!running ? 'power-btn start' : 'power-btn stop'">
+      {{ !running ? 'Start' : 'Stop' }}
+    </button>
+  </div>
+  <canvasjs-chart class="app-chart" *ngIf="chartOptions" [options]="chartOptions"></canvasjs-chart>
+  <app-stat-detail *ngIf="detail" [stat]="detail"></app-stat-detail>
+</div>

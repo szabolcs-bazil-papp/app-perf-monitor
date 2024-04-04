@@ -22,47 +22,15 @@ export class AppComponent {
       return;
     }
 
-    const data: any[] = this.stats.map((it) => this.dataPoint(it));
-    this.chartOptions = {
-      theme: 'light2',
-      title: { text: 'Actions' },
-      subtitles: [{ text: 'Endpoints encountered' }],
-      animationEnabled: true,
-      axisY: {
-        title: 'Time (ms)',
-        suffix: 'ms',
-      },
-      data: [
-        {
-          type: 'rangeColumn',
-          indexLabel: '{y[#index]} ms',
-          toolTipContent: '<b>{label}</b><br>Min: {y[0]}<br>Avg: {y[2]}<br>Max: {y[1]}',
-          dataPoints: data,
-        },
-      ],
-    };
+    this.chartOptions = this.createChartOptions();
+    if (!this.chartOptions) {
+      this.detail = undefined;
+    }
   });
 
   detail?: ServerRequestExecutionStat;
 
-  chartOptions = {
-    theme: 'light2',
-    title: { text: 'Actions' },
-    subtitles: [{ text: 'Endpoints encountered' }],
-    animationEnabled: true,
-    axisY: {
-      title: 'Time (ms)',
-      suffix: 'ms',
-    },
-    data: [
-      {
-        type: 'rangeColumn',
-        indexLabel: '{y[#index]} ms',
-        toolTipContent: '<b>{label}</b><br>Min: {y[0]}<br>Avg: {y[2]}',
-        dataPoints: [] as any,
-      },
-    ],
-  };
+  chartOptions?: any;
 
   constructor(private actuatorService: ActuatorService) {}
 
@@ -79,7 +47,7 @@ export class AppComponent {
 
       this.routine = setInterval(async () => {
         this.stats = await this.actuatorService.getStatus(this.target);
-        this.stats.sort((a, b) => (b.fullStat?.max ?? 0) - (a.fullStat?.max ?? 0));
+        this.stats.sort((a, b) => (a.fullStat?.avg ?? 0) - (b.fullStat?.avg ?? 0));
         this.statsChanged.next();
       }, 500);
     } else {
@@ -90,10 +58,54 @@ export class AppComponent {
     }
   }
 
-  private dataPoint(stat: ServerRequestExecutionStat): any {
+  private createChartOptions(): any | undefined {
+    const rangeData: any[] = this.stats.map((it) => this.rangeDataPoint(it));
+    const avgData: any[] = this.stats.map((it) => this.avgDataPoint(it));
+    return {
+      theme: 'light2',
+      title: { text: 'Actions' },
+      subtitles: [{ text: 'Endpoints encountered' }],
+      animationEnabled: true,
+      axisY: {
+        title: 'Time (ms)',
+        suffix: 'ms',
+        includeZero: true,
+      },
+      toolTip: {
+        shared: true,
+      },
+      data: [
+        {
+          type: 'error',
+          indexLabel: '{y[#index]} ms',
+          toolTipContent: '<b>{label}</b><br>Min: {y[0]}<br>Max: {y[1]}',
+          dataPoints: rangeData,
+        },
+        {
+          type: 'bar',
+          name: 'Avg',
+          toolTipContent: '{name}: {y}',
+          dataPoints: avgData,
+        },
+      ],
+    };
+  }
+
+  private rangeDataPoint(stat: ServerRequestExecutionStat): any {
+    return {
+      label: `${stat.viewName ?? 'GLOBAL'} ${stat.type ?? ''} ${stat.actionCode ?? ''}`,
+      y: [stat.fullStat?.min ?? 0, stat.fullStat?.max ?? 0],
+      origin: stat,
+      click: (e: any) => {
+        this.detail = stat;
+      },
+    };
+  }
+
+  private avgDataPoint(stat: ServerRequestExecutionStat): any {
     return {
       label: `${stat.viewName} ${stat.actionCode}`,
-      y: [stat.fullStat?.min ?? 0, stat.fullStat?.max ?? 0, stat.fullStat?.avg ?? 0],
+      y: stat.fullStat?.avg ?? 0,
       origin: stat,
       click: (e: any) => {
         this.detail = stat;
