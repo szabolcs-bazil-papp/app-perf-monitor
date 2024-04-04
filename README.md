@@ -12,7 +12,7 @@ Amend your server security config to allow cross origin requests for actuator en
 ```java
 @Configuration
 @EnableWebSecurity
-public class EszkSecurityConfig extends WebSecurityConfigurerAdapter {
+public class MyServerSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private static final CorsConfiguration STRICT_CORS_CONFIG = new CorsConfiguration();
   private static final CorsConfiguration PERMISSIVE_CORS_CONFIG;
